@@ -1,139 +1,203 @@
-var width = d3.select('svg').attr('width');
-var height = d3.select('svg').attr('height');
+var svg = d3.select('svg').append('g').attr('transform','translate(50,50)');
 
-var marginLeft = 100;
-var marginTop = 100;
+//add the Architecture Axonic Drawing as background
+var height = 700;
 
-var nestedData = [];
+var defs = svg.append('defs');
+defs.append('pattern')
+    .attr('id','bg')
+    .attr('patternUnits', 'userSpaceOnUse')
+    .attr('width', 1250)
+    .attr('height', 700)
+    .append('image')
+    .attr('xlink:href', 'Background_Single.png')
+    .attr('width', 1250)
+    .attr('height', height)
+    .attr('x', 0)
+    .attr('y', 0);
 
-var svg = d3.select('svg')
-    .append('g')
-    .attr('transform', 'translate(' + marginLeft + ',' + marginTop + ')');
+svg.append('rect')
+    .attr('width', 1250)
+    .attr('height', height)
+    .attr('fill', 'url(#bg)');
 
-//these are the size that the axes will be on the screen; set the domain values after the data loads.
-var scaleX = d3.scaleBand().rangeRound([0, 600]).padding(0.1);
-var scaleY = d3.scaleLinear().range([400, 0]);
+var xaixs = ['windows', 'size', 'floor', 'percentage'];
 
+//var scaleX = d3.scaleBand().rangeRound([0, 300]).padding(0.1);
+//var scaleY = d3.scaleLinear().range([200, 0]);
 
 //import the data from the .csv file
-d3.csv('./countryData_topten.csv', function(dataIn){
-
-    nestedData = d3.nest()
-        .key(function(d){return d.year})
-        .entries(dataIn);
-
-    var loadData = nestedData.filter(function(d){return d.key == '1987'})[0].values;
-
-    // Add the x Axis
-    svg.append("g")
-        .attr('class','xaxis')
-        .attr('transform','translate(0,400)')  //move the x axis from the top of the y axis to the bottom
-        .call(d3.axisBottom(scaleX));
-
-    svg.append("g")
-        .attr('class', 'yaxis')
-        .call(d3.axisLeft(scaleY));
-
-/*
-    svg.append('text')
-        .text('Weekly income by age and gender')
-        .attr('transform','translate(300, -20)')
-        .style('text-anchor','middle');
-
-    svg.append('text')
-        .text('age group')
-        .attr('transform','translate(260, 440)');
-
-    svg.append('text')
-        .text('weekly income')
-        .attr('transform', 'translate(-50,250)rotate(270)');
-
-        */
+d3.csv('./inPathData_Enclosure.csv', function(dataIn){
 
     //bind the data to the d3 selection, but don't draw it yet
-    //svg.selectAll('rect')
-    //    .data(loadData, function(d){return d;});
+
+
+    var path = svg.append('path')
+        .data([dataIn])
+        .attr("d", lineFunction);
+
+    nestedData = d3.nest()
+        .key(function(d){
+            return d.r;
+        })
+        .entries(dataIn);
+
+    var barData = nestedData.filter(function(d){
+        return d.key = 13 ;
+    })[1].values;
+
+    var scaleX = d3.scaleBand().rangeRound([0, 120]).padding(0.1);
+    var scaleY = d3.scaleLinear().range([200,0]);
+    scaleY.domain([0, d3.max(barData.map(function(d){return +d.size}))]);
+    scaleX.domain(xaixs);
+
+    svg.selectAll('circles')
+        .data(dataIn)
+        .enter()
+        .append('circle')
+        .attr('class','c_dataPoints')
+        .on('mouseover', function(d){
+            if (d.r == 13){
+
+                var currentId = 0;
+                console.log(currentId);
+
+                var i = 0;
+
+
+                //add a group of bars
+                svg.append('g')
+                    .attr('class','xaxis')
+                    .attr('transform','translate('+d.x+', '+d.y+')')  //move the x axis from the top of the y axis to the bottom
+                    .call(d3.axisBottom(scaleX))
+                    .attr('opacity', .8);
+
+                svg.append("g")
+                    .attr('class', 'yaxis')
+                    .attr('transform','translate('+d.x+', '+(d.y-200)+' )')
+                    .call(d3.axisLeft(scaleY))
+                    .attr('opacity', .8);
+
+                var mouseoverData =[d.windows, d.size, d.floor, d.percentage];
+                for (i =0; i<4; i++){
+
+                    svg
+                        .append('rect')
+                        .attr('class', 'bars')
+                        .attr('fill', 'pink')
+                        .attr('x',(+d.x)+i*30 +10 )
+                        .attr('y', d.y-(200-scaleY(mouseoverData[i])))
+                        .attr('width', 10)
+                        .attr('height', 200-scaleY(mouseoverData[i]))
+                        .attr('stroke', 'steelblue')
+                        .attr('stroke-width', 0.5);
+
+                   // console.log(mouseoverData[i]);
+                   // console.log(scaleY(mouseoverData[i]));
+                }
+
+            }
+            else
+                return;
+        })
+        .on('mouseout', function(d){
+            d3.selectAll('.bars')
+                .attr('opacity', 0);
+            d3.selectAll('.xaxis')
+                .attr('opacity', 0);
+            d3.selectAll('.yaxis')
+                .attr('opacity', 0);
+        });
+
 
     //call the drawPoints function below, and hand it the data2016 variable with the 2016 object array in it
-    drawPoints(loadData);
+    drawPoints(dataIn);
+
+var startPoint = [dataIn[0].x,dataIn[0].y];
+
+console.log(startPoint);
+
+    var circle = svg.append("circle")
+        .attr("r", 13)
+        .attr('fill', 'pink')
+        .attr("transform", "translate(" + startPoint + ")");
+
+    transition();
+
+    function transition() {
+        circle.transition()
+            .duration(20000)
+            .attrTween("transform", translateAlong(path.node()))
+            .on("end", transition);
+    }
 
 });
+
+
+
 
 //this function draws the actual data points as circles. It's split from the enter() command because we want to run it many times
 //without adding more circles each time.
 function drawPoints(pointData){
-
-    scaleX.domain(pointData.map(function(d){return d.countryCode;}));
-    scaleY.domain([0, d3.max(pointData.map(function(d){return +d.totalPop}))]);
-
-    d3.selectAll('.xaxis')
-        .call(d3.axisBottom(scaleX));
-
-    d3.selectAll('.yaxis')
-        .call(d3.axisLeft(scaleY));
-
-    //select all bars in the DOM, and bind them to the new data
-    var rects = svg.selectAll('.bars')
-        .data(pointData, function(d){return d.countryCode;});
-
-    //look to see if there are any old bars that don't have keys in the new data list, and remove them.
-    rects.exit()
-        .remove();
-
-    //update the properties of the remaining bars (as before)
-    rects
-        .transition()
-        .duration(200)
-        .attr('x',function(d){
-            return scaleX(d.countryCode);
+    svg.selectAll('.c_dataPoints')  //select all of the circles with dataPoints class that we made using the enter() commmand above
+        .data(pointData)          //re-attach them to data (necessary for when the data changes from 2016 to 2017)
+        .attr('cx',function(d){   //look up values for all the attributes that might have changed, and draw the new circles
+            return d.x;
         })
-        .attr('y',function(d){
-            return scaleY(d.totalPop);
+        .attr('cy',function(d){
+            return d.y;
         })
-        .attr('width',function(d){
-            return scaleX.bandwidth();
+        .attr('r', function(d){
+            return d.r;
         })
-        .attr('height',function(d){
-            return 400 - scaleY(d.totalPop);  //400 is the beginning domain value of the y axis, set above
-        });
-
-    //add the enter() function to make bars for any new countries in the list, and set their properties
-    rects
-        .enter()
-        .append('rect')
-        .attr('class','bars')
-        .attr('fill', "slategray")
-        .attr('x',function(d){
-            return scaleX(d.countryCode);
+        .attr('fill', function(d){
+            return d.fill;
         })
-        .attr('y',function(d){
-            return scaleY(d.totalPop);
-        })
-        .attr('width',function(d){
-            return scaleX.bandwidth();
-        })
-        .attr('height',function(d){
-            return 400 - scaleY(d.totalPop);  //400 is the beginning domain value of the y axis, set above
-        });
-
-    //take out bars for any old countries that no longer exist
-    //rects.exit()
-    //    .remove();
-
-
 
 }
 
+/*function drawBars(barData){
+    svg.selectAll('.bars')
+        .data(barData)
+        .enter()
+        .attr('x', function(d){
+            return d.x;
+        })
+        .attr('y', function(d){
+            return d.y;
+        })
+        .attr('width', function(d){
+            return d.size;
+        })
+        .attr('height', 10);
+}
+*/
+var lineFunction = d3.line()
+//.interpolate('cardinal')
+    .x(function(d){
+        return d.x;
+    })
+    .y(function(d){
+        return d.y;
+    })
+    .curve(d3.curveCardinalClosed);
+
+
+
+// Returns an attrTween for translating along the specified path element.
+// Notice how the transition is slow for the first quarter of the animation
+// is fast for the second and third quarters and is slow again in the final quarter
+// This is normal behavior for d3.transition()
+function translateAlong(path) {
+    var l = path.getTotalLength();
+    return function(d, i, a) {
+        return function(t) {
+            var p = path.getPointAtLength(t * l);
+            return "translate(" + p.x + "," + p.y + ")";
+        };
+    };
+}
 
 function updateData(selectedYear){
     return nestedData.filter(function(d){return d.key == selectedYear})[0].values;
-}
-
-
-//this function runs when the HTML slider is moved
-function sliderMoved(value){
-
-    newData = updateData(value);
-    drawPoints(newData);
-
 }
