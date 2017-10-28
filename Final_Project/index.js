@@ -27,7 +27,7 @@ var xaixs = ['windows', 'size', 'floor', 'percentage'];
 //var scaleY = d3.scaleLinear().range([200, 0]);
 
 //import the data from the .csv file
-d3.csv('./inPathData_Enclosure_2.csv', function(dataIn){
+d3.csv('./inPathData_Enclosure.csv', function(dataIn){
 
     //bind the data to the d3 selection, but don't draw it yet
 
