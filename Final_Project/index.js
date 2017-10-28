@@ -46,24 +46,24 @@ d3.csv('./inPathData_Enclosure_2.csv', function(dataIn){
         return d.key = 13 ;
     })[1].values;
 
-
+    var scaleX = d3.scaleBand().rangeRound([0, 120]).padding(0.1);
+    var scaleY = d3.scaleLinear().range([200,0]);
+    scaleY.domain([0, d3.max(barData.map(function(d){return +d.size}))]);
+    scaleX.domain(xaixs);
 
     svg.selectAll('circles')
         .data(dataIn)
         .enter()
         .append('circle')
         .attr('class','c_dataPoints')
-        .on('click', function(d){
+        .on('mouseover', function(d){
             if (d.r == 13){
 
                 var currentId = 0;
                 console.log(currentId);
 
-                var scaleX = d3.scaleBand().rangeRound([0, 120]).padding(0.1);
-                var scaleY = d3.scaleLinear().range([200,0]);
-                scaleY.domain([0, d3.max(barData.map(function(d){return +d.size}))]);
                 var i = 0;
-                scaleX.domain(xaixs);
+
 
                 //add a group of bars
                 svg.append('g')
@@ -86,9 +86,12 @@ d3.csv('./inPathData_Enclosure_2.csv', function(dataIn){
                         .attr('class', 'bars')
                         .attr('fill', 'pink')
                         .attr('x',(+d.x)+i*30 +10 )
-                        .attr('y', d.y-scaleY(mouseoverData[i]))
+                        .attr('y', d.y-(200-scaleY(mouseoverData[i])))
                         .attr('width', 10)
-                        .attr('height', scaleY(mouseoverData[i]))
+                        .attr('height', 200-scaleY(mouseoverData[i]));
+
+                   // console.log(mouseoverData[i]);
+                   // console.log(scaleY(mouseoverData[i]));
                 }
 
             }
