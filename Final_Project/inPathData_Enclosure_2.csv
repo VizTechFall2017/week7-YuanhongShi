@@ -1,16 +1,16 @@
 x,y,r,stroke,fill,number,windows,size,floor,percentage,id
 "750	",640,3,pink,steelblue,2,,,,,
 "710	",600,3,pink,steelblue,2,,,,,
-"675	",560,13,pink,red,2,100,500,10,90,a
+"675	",560,13,pink,red,2,100,350,100,90,a
 "652	",520,3,pink,steelblue,2,,,,,
 "630	",480,3,pink,steelblue,2,,,,,
 600,440,3,pink,steelblue,2,,,,,
-575,400,13,pink,steelblue,2,50,120,30,80,b
+575,400,13,pink,steelblue,2,50,120,300,80,b
 560,360,3,pink,steelblue,2,,,,,
 550,320,3,pink,steelblue,2,,,,,
 540,280,3,pink,steelblue,2,,,,,
 532,240,3,pink,steelblue,2,,,,,
-518,200,13,pink,steelblue,2,160,290,13,78,c
+518,200,13,pink,steelblue,2,160,290,130,78,c
 508,160,3,pink,steelblue,2,,,,,
 495,120,3,pink,steelblue,2,,,,,
 485,80,3,pink,steelblue,2,,,,,
@@ -20,7 +20,7 @@ x,y,r,stroke,fill,number,windows,size,floor,percentage,id
 620,22,3,pink,steelblue,2,,,,,
 660,12,3,pink,steelblue,2,,,,,
 700,8,3,pink,steelblue,2,,,,,
-"740	",0,13,pink,steelblue,2,200,100,20,80,d
+"740	",0,13,pink,steelblue,2,200,100,200,80,d
 780,1,3,pink,steelblue,2,,,,,
 820,5,3,pink,steelblue,2,,,,,
 "860	",9,3,pink,steelblue,2,,,,,
@@ -33,7 +33,7 @@ x,y,r,stroke,fill,number,windows,size,floor,percentage,id
 "848	",260,3,yellow,steelblue,1,,,,,
 "824	",300,3,yellow,steelblue,1,,,,,
 "800	",340,3,yellow,steelblue,1,,,,,
-"775	",380,13,yellow,steelblue,1,210,150,25,90,e
+"775	",380,13,yellow,steelblue,1,210,150,250,90,e
 "750	",420,3,yellow,steelblue,1,,,,,
 "730	",460,3,yellow,steelblue,1,,,,,
 "710	",470,3,yellow,steelblue,1,,,,,
@@ -47,7 +47,7 @@ x,y,r,stroke,fill,number,windows,size,floor,percentage,id
 480,506,3,darkred,steelblue,3,,,,,
 440,495,3,darkred,steelblue,3,,,,,
 405,470,3,darkred,steelblue,3,,,,,
-380,450,13,darkred,steelblue,3,150,120,23,100,f
+380,450,13,darkred,steelblue,3,150,120,230,100,f
 350,430,3,darkred,steelblue,3,,,,,
 310,400,3,darkred,steelblue,3,,,,,
 270,380,3,darkred,steelblue,3,,,,,
@@ -58,7 +58,7 @@ x,y,r,stroke,fill,number,windows,size,floor,percentage,id
 290,270,3,darkred,steelblue,3,,,,,
 330,250,3,darkred,steelblue,3,,,,,
 370,230,3,darkred,steelblue,3,,,,,
-410,210,13,darkred,steelblue,3,80,160,12,45,g
+410,210,13,darkred,steelblue,3,80,160,120,45,g
 450,200,3,darkred,steelblue,3,,,,,
 490,200,3,darkred,steelblue,3,,,,,
 524,220,3,pink,steelblue,2,,,,,
@@ -73,7 +73,7 @@ x,y,r,stroke,fill,number,windows,size,floor,percentage,id
 715,535,3,yellow,steelblue,1,,,,,
 775,525,3,yellow,steelblue,1,,,,,
 835,525,3,yellow,steelblue,1,,,,,
-895,525,13,yellow,steelblue,1,90,110,12,60,h
+895,525,13,yellow,steelblue,1,90,110,120,60,h
 955,525,3,yellow,steelblue,1,,,,,
 1015,525,3,yellow,steelblue,1,,,,,
 1059,525,3,yellow,steelblue,1,,,,,
@@ -81,7 +81,7 @@ x,y,r,stroke,fill,number,windows,size,floor,percentage,id
 1056,450,3,yellow,steelblue,1,,,,,
 1054,410,3,yellow,steelblue,1,,,,,
 1052,370,3,yellow,steelblue,1,,,,,
-1048,330,13,yellow,steelblue,1,140,250,41,32,i
+1048,330,13,yellow,steelblue,1,140,250,240,32,i
 1040,290,3,yellow,steelblue,1,,,,,
 1040,250,3,yellow,steelblue,1,,,,,
 1040,210,3,yellow,steelblue,1,,,,,

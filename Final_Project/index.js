@@ -47,57 +47,61 @@ d3.csv('./inPathData_Enclosure_2.csv', function(dataIn){
     })[1].values;
 
 
+
     svg.selectAll('circles')
         .data(dataIn)
         .enter()
         .append('circle')
         .attr('class','c_dataPoints')
-        .on('mouseover', function(d){
+        .on('click', function(d){
             if (d.r == 13){
 
-                console.log(d.id);
+                var currentId = 0;
+                console.log(currentId);
 
-                var scaleX = d3.scaleBand().rangeRound([0, 150]).padding(0.1);
+                var scaleX = d3.scaleBand().rangeRound([0, 120]).padding(0.1);
                 var scaleY = d3.scaleLinear().range([200,0]);
-                scaleY.domain([0, d3.max(barData.map(function(d){return +d.windows}))]);
-                var i = 1;
+                scaleY.domain([0, d3.max(barData.map(function(d){return +d.size}))]);
+                var i = 0;
                 scaleX.domain(xaixs);
-                //add one bar
-               /* svg
-                    .append('rect')
-                    .attr('class', 'bars')
-                    .attr('fill', 'slategray')
-                    .attr('x', d.x)
-                    .attr('y', d.y)
-                    .attr('width', d.size)
-                    .attr('height', 10);*/
 
-               //add a group of bars
+                //add a group of bars
                 svg.append('g')
                     .attr('class','xaxis')
                     .attr('transform','translate('+d.x+', '+d.y+')')  //move the x axis from the top of the y axis to the bottom
-                    .call(d3.axisBottom(scaleX));
+                    .call(d3.axisBottom(scaleX))
+                    .attr('opacity', .8);
 
                 svg.append("g")
                     .attr('class', 'yaxis')
                     .attr('transform','translate('+d.x+', '+(d.y-200)+' )')
-                    .call(d3.axisLeft(scaleY));
+                    .call(d3.axisLeft(scaleY))
+                    .attr('opacity', .8);
 
-                for (i<5; i++;){
+                var mouseoverData =[d.windows, d.size, d.floor, d.percentage];
+                for (i =0; i<4; i++){
 
                     svg
                         .append('rect')
+                        .attr('class', 'bars')
                         .attr('fill', 'pink')
-                        .attr('x', d.x + i* 15)
-                        .attr('y', d.windows-d.y)
+                        .attr('x',(+d.x)+i*30 +10 )
+                        .attr('y', d.y-scaleY(mouseoverData[i]))
                         .attr('width', 10)
-                        .attr('height', d.windows);
-
+                        .attr('height', scaleY(mouseoverData[i]))
                 }
 
             }
             else
                 return;
+        })
+        .on('mouseout', function(d){
+            d3.selectAll('.bars')
+                .attr('opacity', 0);
+            d3.selectAll('.xaxis')
+                .attr('opacity', 0);
+            d3.selectAll('.yaxis')
+                .attr('opacity', 0);
         });
 
 
