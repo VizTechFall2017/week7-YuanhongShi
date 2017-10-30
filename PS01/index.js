@@ -8,7 +8,7 @@ defs.append('pattern')
     .attr('id','bg')
     .attr('patternUnits', 'userSpaceOnUse')
     .attr('width', 1250)
-    .attr('height', 700)
+    .attr('height', height)
     .append('image')
     .attr('xlink:href', 'Background_Single.png')
     .attr('width', 1250)
@@ -88,9 +88,7 @@ d3.csv('./inPathData_Enclosure.csv', function(dataIn){
                         .attr('x',(+d.x)+i*30 +10 )
                         .attr('y', d.y-(200-scaleY(mouseoverData[i])))
                         .attr('width', 10)
-                        .attr('height', 200-scaleY(mouseoverData[i]))
-                        .attr('stroke', 'steelblue')
-                        .attr('stroke-width', 0.5);
+                        .attr('height', 200-scaleY(mouseoverData[i]));
 
                    // console.log(mouseoverData[i]);
                    // console.log(scaleY(mouseoverData[i]));
@@ -116,10 +114,23 @@ d3.csv('./inPathData_Enclosure.csv', function(dataIn){
 var startPoint = [dataIn[0].x,dataIn[0].y];
 
 console.log(startPoint);
+var pattern = svg. append('defs')
+    .append('pattern')
+    .attr('id', 'car')
+    .attr('width', 30)
+    .attr('height', 20)
+    .attr('patternUnits', 'userSpaceOnUse')
+    .append('image')
+    .attr('xlink:href', 'car.png')
+    .attr('width', 30)
+    .attr('height', 20)
+    .attr('x', 0)
+    .attr('y', 0);
 
-    var circle = svg.append("circle")
-        .attr("r", 13)
-        .attr('fill', 'pink')
+    var circle = svg.append("rect")
+        .attr('height', 20)
+        .attr('width', 30)
+        .attr('fill', 'url(#car)')
         .attr("transform", "translate(" + startPoint + ")");
 
     transition();
