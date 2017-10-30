@@ -47,7 +47,7 @@ d3.csv('./inPathData_Enclosure.csv', function(dataIn){
     })[1].values;
 
     var scaleX = d3.scaleBand().rangeRound([0, 120]).padding(0.1);
-    var scaleY = d3.scaleLinear().range([200,0]);
+    var scaleY = d3.scaleLinear().range([150,0]);
     scaleY.domain([0, d3.max(barData.map(function(d){return +d.size}))]);
     scaleX.domain(xaixs);
 
